@@ -117,7 +117,7 @@ else:
     Display_resolution = tuple(Force_resolution)
 
 print('Running at ' + str(Display_resolution[0]) + ' x ' + str(Display_resolution[1]))
-pygame.display.set_caption('Retro Rampage')  # Set display name
+pygame.display.set_caption('F2 Racing ')  # Set display name
 try:
     icon = pygame.surface.Surface((32, 32))
     icon.set_colorkey(BLACK)
@@ -133,16 +133,6 @@ else:
     Display = pygame.display.set_mode(Display_resolution, display=Screen, flags=pygame.FULLSCREEN)
     Fullscreen = True
 
-'''
-Create virtual window at 1080p that game writes to, then when screen is updated scale the window 
-to the size of the screen and write to screen, also scale mouse positions and screen updates 
-between window and screen. This means that the game will always render at 1080p, however can output 
-any resolution by scaling. There is also a secondary window for fade effects and visual animations that works the same.
-
-Note: any scaling between any window and the screen (apart from writing directly to it, which this game doesn't do)
-      is not 100% exact due to rounding! Rounding will always round UP to avoid artifacts, but could overlap pixels 
-      in the process. This usually results in thin lines not showing up or being thinner than they are supposed to.
-'''
 WIDTH, HEIGHT = 1920, 1080  # System default resolution that will scale to display *MUST BE 1080p!*
 CENTRE = WIDTH // 2, HEIGHT // 2  # Calculate centre pixel for reference
 Window = pygame.Surface((WIDTH, HEIGHT))
@@ -1738,7 +1728,7 @@ def main_window(curr_bg, pad_x=0, pad_y=0):
 
     x = pad_x + CENTRE[0]
     y = pad_y + 100
-    draw_text(x, y, 'Retro Rampage', WHITE, 100, bold=True, bar=True)  # Title
+    draw_text(x, y, 'F2 Racing', WHITE, 100, bold=True, bar=True)  # Title
 
     x = pad_x + 210
     y = pad_y + 112
@@ -1767,12 +1757,6 @@ def main_window(curr_bg, pad_x=0, pad_y=0):
     tile(x + 256, y, 'dirt road', 60, grid=False)
     draw_text(x + 190, y + 20, 'Tutorial', WHITE, 70)
 
-    x = pad_x + 340
-    y = pad_y + 648
-    tile(x, y, 'dirt road', 76, grid=False)  # Credits button
-    tile(x + 128, y, 'dirt road', 1, grid=False)
-    tile(x + 205, y, 'dirt road', 60, grid=False)
-    draw_text(x + 163, y + 20, 'Credits', WHITE, 70)
 
 
 def choose_map_window(curr_bg, pad_x=0, pad_y=0):
@@ -3215,51 +3199,6 @@ def confirm_quit_window(curr_bg, pad_x=0, pad_y=0, surf=Window):
     draw_text(x + 153, y + 20, 'No', WHITE, 70, surf=surf)
 
 
-def credits_window(curr_bg, pad_x=0, pad_y=0):
-    Window.blit(curr_bg, (pad_x, pad_y))
-
-    x = pad_x + CENTRE[0]
-    y = pad_y + 115
-    draw_text(x, y, 'Credits', WHITE, 100)  # Title
-
-    y = pad_y + 215
-    text = 'Developer & Designer - Anthony Guy'
-    draw_text(x, y, text, WHITE, 50)  # Credits #1
-
-    y += 70
-    text = 'Graphics - Kenney Vleugels'
-    draw_text(x, y, text, WHITE, 50)  # Credits #2
-
-    y += 70
-    text = 'Menu Music - Trevor Lentz'
-    draw_text(x, y, text, WHITE, 50)  # Credits #3
-
-    y += 70
-    text = 'Game Music & SFX - Juhani Junkala'
-    draw_text(x, y, text, WHITE, 50)  # Credits #4
-
-    y = CENTRE[1] + 80
-    text = 'Special Thanks'
-    draw_text(x, y, text, WHITE, 50, bar=True)  # Credits #1
-
-    y += 80
-    text = 'Keith Brown'
-    draw_text(x, y, text, WHITE, 50)  # Credits #2
-
-    y += 70
-    text = 'Jonny Farmer'
-    draw_text(x, y, text, WHITE, 50)  # Credits #3
-
-    y += 70
-    text = 'Charlotte Newbold'
-    draw_text(x, y, text, WHITE, 50)  # Credits #4
-
-    x = pad_x + 210
-    y = pad_y + 112
-    tile(x, y, 'dirt road', 76, grid=False, scale=(100, 100))  # Back button
-    tile(x + 100, y, 'dirt road', 60, grid=False, scale=(100, 100))
-    draw_text(x + 100, y + 23, 'Back', WHITE, 55)
-
 
 def tutorial_window(curr_bg, pad_x=0, pad_y=0):
     Window.blit(curr_bg, (pad_x, pad_y))
@@ -3568,48 +3507,6 @@ def controls_window():
 def menu_background(top=False, right=False, bottom=False, left=False):
     # Function to generate background as single surface
     surf = pygame.surface.Surface((WIDTH, HEIGHT))
-
-    # CORNERS
-    tile(0, 0, 'sand', 2, surf=surf, update=False)  # Top left
-    tile(14, 0, 'sand', 3, surf=surf, update=False)  # Top right
-    tile(0, 9, 'sand', 7, surf=surf, update=False)  # Bottom left
-    tile(14, 9, 'sand', 8, surf=surf, update=False)  # Bottom right
-
-    for x in range(1, 14):  # TOP
-        tile(x, 0, 'sand', 10, surf=surf, update=False)  # Bottom left
-    if top:  # If we want a top entrance...
-        tile(6, 0, 'sand', 11, surf=surf, update=False)  # Top left
-        tile(7, 0, 'dirt', 5, surf=surf, update=False)  # Top centre
-        tile(8, 0, 'sand', 9, surf=surf, update=False)  # Top right
-
-    for y in range(1, 9):  # RIGHT
-        tile(14, y, 'sand', 4, surf=surf, update=False)  # Bottom left
-    if right:  # If we want a right entrance...
-        tile(14, 4, 'sand', 9, surf=surf, update=False)  # Top right
-        tile(14, 5, 'sand', 13, surf=surf, update=False)  # Bottom right
-
-    for x in range(1, 14):  # BOTTOM
-        tile(x, 9, 'sand', 14, surf=surf, update=False)  # Bottom left
-    if bottom:  # If we want a top entrance...
-        tile(6, 9, 'sand', 1, surf=surf, update=False)  # Top left
-        tile(7, 9, 'dirt', 5, surf=surf, update=False)  # Top centre
-        tile(8, 9, 'sand', 13, surf=surf, update=False)  # Top right
-
-    for y in range(1, 9):  # LEFT
-        tile(0, y, 'sand', 6, surf=surf, update=False)
-    if left:  # If we want a left entrance...
-        tile(0, 4, 'sand', 11, surf=surf, update=False)  # Top left
-        tile(0, 5, 'sand', 1, surf=surf, update=False)  # Bottom left
-
-    for x in range(1, 14):  # For every row
-        for y in range(1, 9):  # For every column
-            rand = randint(0, 1)  # Randomize dirt pattern
-            if rand == 1:
-                ver = 5
-            else:
-                ver = 12
-            tile(x, y, 'dirt', ver, surf=surf, update=False)  # Fill dirt
-
     return surf  # Return complete image
 
 
@@ -5708,7 +5605,7 @@ def main():
     if Intro_screen:
         intro_bg = menu_background()
         Window.blit(intro_bg, (0, 0))
-        draw_text(CENTRE[0], CENTRE[1] - 150, 'Retro Rampage', WHITE, 150, bar=True, three_d=True)
+        draw_text(CENTRE[0], CENTRE[1] - 150, 'F2 Race', WHITE, 150, bar=True, three_d=True)
         update_screen(full_screen=True)
         play_sound('boot')
         pygame.time.wait(2000)
@@ -5855,32 +5752,6 @@ def main():
                             choose_map_window(new_bg)
                             car.rotate(0)
                             car.move(960, 940)
-                            update_screen(full_screen=True)  # Update the screen
-
-                    elif not buttons[0] and button_trigger:
-                        button_trigger = False
-
-                # CREDITS BUTTON
-                elif 338 <= mouse_pos[0] <= 671 and 648 <= mouse_pos[1] <= 755:  # Check quit button co-ords
-                    pos_x = 340
-                    pos_y = 648
-                    tile(pos_x, pos_y, 'sand road', 73, grid=False)
-                    tile(pos_x + 128, pos_y, 'sand road', 88, grid=False)
-                    tile(pos_x + 205, pos_y, 'sand road', 57, grid=False)
-                    draw_text(pos_x + 163, pos_y + 20, 'Credits', BLACK, 70)
-
-                    buttons = pygame.mouse.get_pressed()
-                    if buttons[0] and not button_trigger:
-                        button_trigger = True
-                        current_window = 'credits'  # Change current window to choose players
-                        play_sound('menu button')  # Play button click sounds
-                        new_bg = menu_background(right=True)
-                        if Animations:
-                            car.animate('left', bg)
-                            animate_window(main_window, credits_window, bg, new_bg, car, 'left')
-                        else:
-                            credits_window(new_bg)
-                            car.rotate(90)
                             update_screen(full_screen=True)  # Update the screen
 
                     elif not buttons[0] and button_trigger:
@@ -8383,44 +8254,6 @@ def main():
                     elif not buttons[0] and button_trigger:
                         button_trigger = False
 
-            # Credits window
-            elif current_window == 'credits':
-                if prev_window != current_window:  # On first transition to window draw background
-                    bg = new_bg  # Generate new background
-                    credits_window(bg)  # Draw assets on background
-                    car.draw()
-                    controller_popup()
-                    update_screen(full_screen=True)  # Update entire screen
-                    prev_window = current_window  # Set current window to updated
-
-                credits_window(bg)  # Always draw default state first
-                mouse_pos = get_mouse_pos()  # Get current mouse position
-
-                # BACK BUTTON
-                if 210 <= mouse_pos[0] <= 409 and 112 <= mouse_pos[1] <= 211:
-                    pos_x = 210
-                    pos_y = 112
-                    tile(pos_x, pos_y, 'sand road', 73, grid=False, scale=(100, 100))  # Back button
-                    tile(pos_x + 100, pos_y, 'sand road', 57, grid=False, scale=(100, 100))
-                    draw_text(pos_x + 100, pos_y + 23, 'Back', BLACK, 55)
-
-                    buttons = pygame.mouse.get_pressed()
-                    if buttons[0] and not button_trigger:
-                        button_trigger = True
-                        current_window = 'main menu'
-                        play_sound('menu button')  # Play button click sounds
-                        new_bg = menu_background(top=True, right=True, bottom=True, left=True)
-                        if Animations:
-                            car.animate('right', bg)
-                            animate_window(credits_window, main_window, bg, new_bg, car, 'right')
-                        else:
-                            main_window(new_bg)
-                            car.rotate(270)
-                            update_screen(full_screen=True)
-
-                    elif not buttons[0] and button_trigger:
-                        button_trigger = False
-
             # Tutorial window
             elif current_window == 'tutorial':
                 if prev_window != current_window:  # On first transition to window draw background
@@ -8763,7 +8596,7 @@ def main():
                     else:
                         saved_timer = None
 
-            # Credits window
+            # Leaderboard window
             elif current_window == 'leaderboard':
                 if prev_window != current_window:  # On first transition to window draw background
                     bg = new_bg  # Generate new background
