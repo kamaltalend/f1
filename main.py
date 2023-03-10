@@ -4406,57 +4406,6 @@ def update_screen(full_screen=False, rect=None, surf=Window):
         screen_updates = []  # After update screen has been called reset updates buffer to None as updates have updated
 
 
-def controller_added():
-    global controllers, controller_prompts, controls
-    controller = pygame.joystick.Joystick(len(controllers))
-    controllers.append(controller)
-    controller_prompts.append((short_controller_name(controller.get_name()),
-                               True, pygame.time.get_ticks() + 4000))
-    play_sound('controller connect')
-
-def controller_removed(instance_id):
-    global controller_prompts
-    controller = 0
-    for controller_id in controllers:
-        if controller_id.get_instance_id() == instance_id:
-            controller = controllers[controllers.index(controller_id)]
-            break
-    if type(controller) == int:
-        print('ERR: controller_removed() | controller not found!')
-        print('Controllers: {0}'.format(controllers))
-        return
-
-    controller_prompts.append((short_controller_name(controller.get_name()),
-                               False, pygame.time.get_ticks() + 4000))
-    for player in Players:
-        if player.controls == controller:
-            player.controls = player.default_controls
-
-    controller.quit()
-    controllers.remove(controller)
-    if controller in controls:
-        controls.remove(controller)
-    play_sound('controller disconnect')
-
-
-def short_controller_name(name: str):
-    if 'Xbox 360' in name:
-        return 'Xbox 360 controller (wired)'
-    elif 'Xbox One' in name and 'For Windows' in name:
-        return 'Xbox One controller (wired)'
-    elif name == 'Xbox One S Controller':
-        return 'Xbox One S controller (wireless)'
-    elif name == 'Xbox Series X Controller':
-        return 'Xbox Series X controller (wireless)'
-    elif 'Xbox One' in name:
-        return 'Xbox One controller'
-    else:
-        if 'Controller (' in name:
-            return 'Controller (wired)'
-        else:
-            return 'Controller'
-
-
 # Get mouse position but scale between display and window from (screen size) to 1080p
 def get_mouse_pos():
     pos = pygame.mouse.get_pos()
@@ -4700,29 +4649,6 @@ def game():  # All variables that are not constant
                         music_thread.join(timeout=0.25)
                     pygame.quit()
                     quit()
-
-            elif event.type == pygame.JOYDEVICEREMOVED:
-                controller = None
-                for controller_id in controllers:
-                    if controller_id.get_instance_id() == event.__dict__['instance_id']:
-                        controller = controllers[controllers.index(controller_id)]
-                        break
-                for player in Player_list:
-                    if player.controller == controller and not game_countdown and current_window != 'controls':
-                        Window_screenshot = Window.copy()
-                        Window_screenshot.set_alpha(80)
-                        Game_paused = True
-                        pygame.mouse.set_visible(True)
-                        player.controller = None
-                        current_window = 'controls'
-                        break
-                    elif player.controller == controller and current_window == 'controls':
-                        player.controller = None
-
-                controller_removed(event.__dict__['instance_id'])
-
-            elif event.type == pygame.JOYDEVICEADDED:
-                controller_added()
 
         for player in Player_list:
             if player.controller:
@@ -5632,20 +5558,6 @@ def main():
                         music_thread.join(timeout=0.25)
                     pygame.quit()
                     quit()
-
-                elif event.type == pygame.JOYDEVICEADDED:
-                    controller_added()
-                elif event.type == pygame.JOYDEVICEREMOVED:
-                    for player in Players:
-                        if player.controls == pygame.joystick.Joystick and \
-                                event.__dict__['instance_id'] == player.controls.get_instance_id():
-                            if player.id == 1 or player.id == 2:
-                                current_window = 'choose players'
-                            elif player.id == 3 or player.id == 4:
-                                current_window = 'choose players 2'
-                            else:
-                                current_window = 'choose players 3'
-                    controller_removed(event.__dict__['instance_id'])
 
                 elif event.type == pygame.FULLSCREEN:
                     pygame.display.toggle_fullscreen()
