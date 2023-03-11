@@ -117,7 +117,7 @@ else:
     Display_resolution = tuple(Force_resolution)
 
 print('Running at ' + str(Display_resolution[0]) + ' x ' + str(Display_resolution[1]))
-pygame.display.set_caption('F2 Racing ')  # Set display name
+pygame.display.set_caption('F!GP Racing ')  # Set display name
 try:
     icon = pygame.surface.Surface((32, 32))
     icon.set_colorkey(BLACK)
@@ -1728,7 +1728,7 @@ def main_window(curr_bg, pad_x=0, pad_y=0):
 
     x = pad_x + CENTRE[0]
     y = pad_y + 100
-    draw_text(x, y, 'F2 Racing', WHITE, 100, bold=True, bar=True)  # Title
+    draw_text(x, y, 'F!GP Racing', GREEN, 100, bold=True, bar=True)  # Title
 
     x = pad_x + 210
     y = pad_y + 112
@@ -1737,27 +1737,18 @@ def main_window(curr_bg, pad_x=0, pad_y=0):
     draw_text(x + 98, y + 21, 'Quit', WHITE, 60)
 
     x = pad_x + 340
-    y = pad_y + 324
+    y = pad_y + CENTRE[1]
     tile(x, y, 'dirt road', 76, grid=False)  # Start button
     tile(x + 65, y, 'dirt road', 1, grid=False)
     tile(x + 190, y, 'dirt road', 60, grid=False)
     draw_text(x + 160, y + 20, 'Race', WHITE, 70)
 
     x = pad_x + 1220
-    y = pad_y + 324
+    y = pad_y + CENTRE[1]
     tile(x, y, 'dirt road', 76, grid=False)  # Settings button
     tile(x + 128, y, 'dirt road', 1, grid=False)
     tile(x + 256, y, 'dirt road', 60, grid=False)
     draw_text(x + 190, y + 20, 'Settings', WHITE, 70)
-
-    x = pad_x + 1220
-    y = pad_y + 648
-    tile(x, y, 'dirt road', 76, grid=False)  # Tutorial button
-    tile(x + 128, y, 'dirt road', 1, grid=False)
-    tile(x + 256, y, 'dirt road', 60, grid=False)
-    draw_text(x + 190, y + 20, 'Tutorial', WHITE, 70)
-
-
 
 def choose_map_window(curr_bg, pad_x=0, pad_y=0):
     Window.blit(curr_bg, (pad_x, pad_y))  # Display the current bg
@@ -3199,60 +3190,6 @@ def confirm_quit_window(curr_bg, pad_x=0, pad_y=0, surf=Window):
     draw_text(x + 153, y + 20, 'No', WHITE, 70, surf=surf)
 
 
-
-def tutorial_window(curr_bg, pad_x=0, pad_y=0):
-    Window.blit(curr_bg, (pad_x, pad_y))
-
-    x = pad_x + CENTRE[0]
-    y = pad_y + 115
-    draw_text(x, y, 'Tutorial', WHITE, 100)  # Title
-
-    x = pad_x + 210
-    y = pad_y + 112
-    tile(x, y, 'dirt road', 76, grid=False, scale=(100, 100))  # Back button
-    tile(x + 100, y, 'dirt road', 60, grid=False, scale=(100, 100))
-    draw_text(x + 100, y + 23, 'Back', WHITE, 55)
-
-    x = pad_x + 535
-    y = pad_y + 325
-    surf = pygame.transform.scale(pygame.image.load(assets.power_up('boost')), (80, 80))
-    surf.set_colorkey(BLACK)
-    Window.blit(surf, (x, y))
-    draw_text(x + 40, y + 80, 'Boost', WHITE, 60)
-    draw_text(x + 40, y + 140, "Temporarily boosts player's", WHITE, 40)
-    draw_text(x + 40, y + 180, "speed based on their max speed", WHITE, 40)
-
-    x = pad_x + 535
-    y = pad_y + 649
-    surf = pygame.transform.scale(pygame.image.load(assets.power_up('repair')), (80, 80))
-    surf.set_colorkey(BLACK)
-    Window.blit(surf, (x, y))
-    draw_text(x + 40, y + 80, 'Repair', WHITE, 60)
-    draw_text(x + 40, y + 140, "Repairs player's damage", WHITE, 40)
-    draw_text(x + 40, y + 180, "(crashing will cause damage)", WHITE, 40)
-
-    x = pad_x + 1435
-    y = pad_y + 325
-    surf = pygame.transform.scale(pygame.image.load(assets.power_up('lightning')), (80, 80))
-    surf.set_colorkey(BLACK)
-    Window.blit(surf, (x, y))
-    draw_text(x + 40, y + 80, 'Lightning', WHITE, 60)
-    draw_text(x + 40, y + 140, "Strikes the car with the", WHITE, 40)
-    draw_text(x + 40, y + 180, "symbol next to their name", WHITE, 40)
-
-    x = pad_x + 1435
-    y = pad_y + 649
-    surf = pygame.transform.scale(pygame.image.load(assets.power_up('bullet')), (80, 80))
-    surf.set_colorkey(BLACK)
-    Window.blit(surf, (x, y))
-    draw_text(x + 40, y + 80, 'Bullet', WHITE, 60)
-    draw_text(x + 40, y + 140, "Stops the car moving", WHITE, 40)
-    draw_text(x + 40, y + 180, "for a few seconds", WHITE, 40)
-
-    draw_text(CENTRE[0], 923, 'All penalties are based on car speeds to be fair', WHITE, 40)
-    draw_text(CENTRE[0], 963, 'Powerups can be picked up by all vehicles!', WHITE, 40)
-
-
 def settings_window(curr_bg, pad_x=0, pad_y=0, surf=Window):
     surf.blit(curr_bg, (pad_x, pad_y))
 
@@ -3505,9 +3442,7 @@ def controls_window():
 
 
 def menu_background(top=False, right=False, bottom=False, left=False):
-    # Function to generate background as single surface
-    surf = pygame.surface.Surface((WIDTH, HEIGHT))
-    return surf  # Return complete image
+    return pygame.image.load("assets/bg_track.jpg")
 
 
 def animate_window(window, new_window, bg, new_bg, car, direction: str):
@@ -5531,7 +5466,7 @@ def main():
     if Intro_screen:
         intro_bg = menu_background()
         Window.blit(intro_bg, (0, 0))
-        draw_text(CENTRE[0], CENTRE[1] - 150, 'F2 Race', WHITE, 150, bar=True, three_d=True)
+        draw_text(CENTRE[0], CENTRE[1] - 400, 'F!GP Racing', RED, 150)
         update_screen(full_screen=True)
         play_sound('boot')
         pygame.time.wait(2000)
@@ -5642,9 +5577,9 @@ def main():
                         button_trigger = False
 
                 # RACE BUTTON
-                elif 340 <= mouse_pos[0] <= 657 and 324 <= mouse_pos[1] <= 431:  # If mouse is over start button...
+                elif 340 <= mouse_pos[0] <= 657 and CENTRE[1] <= mouse_pos[1] <= CENTRE[1]+107:  # If mouse is over start button...
                     pos_x = 340
-                    pos_y = 324
+                    pos_y = CENTRE[1]
                     tile(pos_x, pos_y, 'sand road', 73, grid=False)  # Draw active start button
                     tile(pos_x + 65, pos_y, 'sand road', 88, grid=False)
                     tile(pos_x + 190, pos_y, 'sand road', 57, grid=False)
@@ -5670,9 +5605,9 @@ def main():
                         button_trigger = False
 
                 # SETTINGS BUTTON
-                elif 1220 <= mouse_pos[0] <= 1604 and 324 <= mouse_pos[1] <= 432:
+                elif 1220 <= mouse_pos[0] <= 1604 and CENTRE[1] <= mouse_pos[1] <= CENTRE[1]+107:
                     x = 1220
-                    y = 324
+                    y = CENTRE[1]
                     tile(x, y, 'sand road', 73, grid=False)  # Settings button
                     tile(x + 128, y, 'sand road', 88, grid=False)
                     tile(x + 256, y, 'sand road', 57, grid=False)
@@ -5692,25 +5627,6 @@ def main():
                             car.rotate(270)
                             update_screen(full_screen=True)  # Update the screen
 
-                    elif not buttons[0] and button_trigger:
-                        button_trigger = False
-
-                # TUTORIAL BUTTON
-                elif 1220 <= mouse_pos[0] <= 1604 and 648 <= mouse_pos[1] <= 755:
-                    x = 1220
-                    y = 648
-                    tile(x, y, 'sand road', 73, grid=False)  # Tutorial button
-                    tile(x + 128, y, 'sand road', 88, grid=False)
-                    tile(x + 256, y, 'sand road', 57, grid=False)
-                    draw_text(x + 190, y + 20, 'tutorial', BLACK, 70)
-
-                    buttons = pygame.mouse.get_pressed()
-                    if buttons[0] and not button_trigger:
-                        button_trigger = True
-                        current_window = 'tutorial'  # Change current window to choose players
-                        play_sound('menu button')  # Play button click sounds
-                        new_bg = menu_background()
-                        fade_to_black(car=car)
                     elif not buttons[0] and button_trigger:
                         button_trigger = False
 
@@ -8162,38 +8078,6 @@ def main():
                                 main_window(new_bg)
                                 car.rotate(0)
                                 update_screen(full_screen=True)
-
-                    elif not buttons[0] and button_trigger:
-                        button_trigger = False
-
-            # Tutorial window
-            elif current_window == 'tutorial':
-                if prev_window != current_window:  # On first transition to window draw background
-                    bg = new_bg  # Generate new background
-                    tutorial_window(bg)  # Draw assets on background
-                    fade_from_black()
-                    controller_popup()
-                    update_screen(full_screen=True)
-                    prev_window = current_window  # Set current window to updated
-
-                tutorial_window(bg)  # Always draw default state first
-                mouse_pos = get_mouse_pos()  # Get current mouse position
-
-                # BACK BUTTON
-                if 210 <= mouse_pos[0] <= 409 and 112 <= mouse_pos[1] <= 211:
-                    pos_x = 210
-                    pos_y = 112
-                    tile(pos_x, pos_y, 'sand road', 73, grid=False, scale=(100, 100))  # Back button
-                    tile(pos_x + 100, pos_y, 'sand road', 57, grid=False, scale=(100, 100))
-                    draw_text(pos_x + 100, pos_y + 23, 'Back', BLACK, 55)
-
-                    buttons = pygame.mouse.get_pressed()
-                    if buttons[0] and not button_trigger:
-                        button_trigger = True
-                        current_window = 'main menu'
-                        play_sound('menu button')  # Play button click sounds
-                        new_bg = menu_background(top=True, right=True, bottom=True, left=True)
-                        fade_to_black()
 
                     elif not buttons[0] and button_trigger:
                         button_trigger = False
